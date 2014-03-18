@@ -1,3 +1,20 @@
+@-webkit-keyframes bounce-right {
+  0%   { padding-left: 0; }
+  100% { padding-left: 5px; }
+}
+@-moz-keyframes bounce-right {
+  0%   { padding-left: 0; }
+  100% { padding-left: 5px; }
+}
+@-o-keyframes bounce-right {
+  0%   { padding-left: 0; }
+  100% { padding-left: 5px; }
+}
+@keyframes bounce-right {
+  0%   { padding-left: 0; }
+  100% { padding-left: 5px; }
+}
+
 html, body {
     margin: 0;
     height: 100%;
@@ -15,10 +32,14 @@ h1, h2, h3, h4, h5, h6 {
 a {
 	text-decoration: none;
 	color: yellow;
+	font-weight: bold;
 }
 
-a:hover {
-	text-decoration: underline;
+p a:hover {
+	-webkit-animation: bounce-right 0.5s 0s 6 alternate ease-in-out both;
+	-moz-animation: bounce-right 0.5s 0s 6 alternate ease-in-out both;
+	-o-animation: bounce-right 0.5s 0s 6 alternate ease-in-out both;
+	animation: bounce-right 0.5s 0s 6 alternate ease-in-out both;
 }
 
 #main {
@@ -105,6 +126,7 @@ a:hover {
 #right-half section h1 {
 	font-size: 2.5em;
 	margin: 25px 0;
+	border-bottom: 1px #ccc solid;
 }
 
 #right-half section h2 {
@@ -113,6 +135,24 @@ a:hover {
 
 .folio-entry {
 	margin: 100px 0;
+}
+
+#right-half .experience-entry {
+	margin: 20px auto;
+}
+
+#right-half .experience-entry ul {
+	display: none;
+}
+
+#right-half .experience-duration {
+	font-style: italic;
+}
+
+#right-half .folio-entry h2 {
+	text-decoration: none;
+	font-size: 1.8em;
+	margin: 10px 0;
 }
 
 .folio-entry-img {
