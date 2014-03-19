@@ -1,3 +1,5 @@
+keyQueue = [];
+
 function vertCenterParent(elt) {
     elt.css("margin-top",(elt.parent().outerHeight() - elt.outerHeight()) / 2);
 }
@@ -68,10 +70,18 @@ function getTargetSection(idx) {
     return target;
 }
 
-function scrollToSection(section) {
-    $('html,body').animate({
-        scrollTop: section.offset().top - parseInt(section.css('margin-top'))
-    }, 1000);
+function scrollToSection(keyCode) {
+    console.log(keyQueue);
+
+    if (keyCode == 38 || keyCode == 40) {
+        section = keyCode == 38 ? getTargetSection(-1) : getTargetSection(1);
+
+        $('html,body').animate({
+            scrollTop: section.offset().top - parseInt(section.css('margin-top'))
+        },
+        1000,
+        function() {keyQueue.shift(); scrollToSection(keyQueue[0])});        
+    }
 }
 
 $(document).ready(function(){
@@ -96,13 +106,12 @@ $(document).ready(function(){
     $(document).keydown(function(e) {
         e.preventDefault();
         var code = (e.keyCode ? e.keyCode : e.which);
-        if (code == 38) {
-            // scroll to prev section
-            scrollToSection(getTargetSection(-1))
-        } else if (code == 40) {
-            // scroll to next section
-            scrollToSection(getTargetSection(1))
+
+        if (!keyQueue.length && (code == 38 || code == 40)) {
+            scrollToSection(code)
         }
+
+        keyQueue.push(code);
     });
 
     $(window).resize(function() {vertCenterAll()});
