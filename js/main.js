@@ -20,6 +20,60 @@ function vertCenterAll() {
     });
 }
 
+function getTargetSection(idx) {
+    var target;
+    scrollCenter = $(window).scrollTop() + $(window).height() / 2;
+
+    switch(idx) {
+        // get current section
+        case 0:
+            $('#right-half section').each(function() {
+                sectionTop = $(this).offset().top - parseInt($(this).css('margin-top'));
+                sectionBottom = $(this).offset().top + $(this).outerHeight() + parseInt($(this).css('margin-bottom'));
+                currentSection = false;
+                if (scrollCenter >= sectionTop && scrollCenter < sectionBottom) {
+                    currentSection = $(this);
+                    return false;
+                }
+            });
+            target = currentSection;
+            break;
+        // get prev section
+        case -1:
+            current = getTargetSection(0);
+            if (scrollCenter > current.offset().top + current.height() / 2) {
+                target = current;
+                break
+            }
+            else {
+                target = getTargetSection(0).prev('section');
+                if (!target.length)
+                    target = getTargetSection(0).parent().prev().children('section').last();
+                break;                
+            }
+        // get next section
+        case 1:
+            current = getTargetSection(0);
+            if (scrollCenter < current.offset().top + current.height() / 2) {
+                target = current;
+                break;
+            }
+            else {
+                target = getTargetSection(0).next('section');
+                if (!target.length)
+                    target = getTargetSection(0).parent().next().children('section').first();
+                break;
+            }
+    }
+    return target;
+}
+
+function scrollToSection(section) {
+    $('html,body').animate({
+        scrollTop: section.offset().top - parseInt(section.css('margin-top'))
+    }, 1000);
+}
+
 $(document).ready(function(){
     vertCenterAll();
 
@@ -34,6 +88,23 @@ $(document).ready(function(){
             }
         }
     });
+
+    $('#resume ul li').click(function() {
+        $(this).children('ul').first().slideToggle();
+    });
+
+    $(document).keydown(function(e) {
+        e.preventDefault();
+        var code = (e.keyCode ? e.keyCode : e.which);
+        if (code == 38) {
+            // scroll to prev section
+            scrollToSection(getTargetSection(-1))
+        } else if (code == 40) {
+            // scroll to next section
+            scrollToSection(getTargetSection(1))
+        }
+    });
+
+    $(window).resize(function() {vertCenterAll()});
 });
 
-$(window).resize(function() {vertCenterAll();});
