@@ -28,6 +28,8 @@ function setUp() {
 
     targetIndex = getCurIndex();
     maxTargetIndex = $('.scroll-screen').length - 1;
+
+    scrollToSection($('.scroll-screen').eq(targetIndex));
 }
 
 function displayArrows() {
