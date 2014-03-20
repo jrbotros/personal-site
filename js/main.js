@@ -20,6 +20,15 @@ function vertCenterAll() {
     });
 }
 
+function displayArrows() {
+    if (getCurIndex() == 0)
+        $('.arrow.up').fadeOut(500);
+    else if (getCurIndex() == maxTargetIndex)
+        $('.arrow.down').fadeOut(500);
+    else
+        $('.arrow').fadeIn(500);
+}
+
 function getMarginOffset(elt) {
     return [elt.offset().top - parseInt(elt.css('margin-top')), elt.offset().top + elt.outerHeight() + parseInt(elt.css('margin-bottom'))]
 }
@@ -41,6 +50,7 @@ function getCurIndex() {
 }
 
 function scrollToSection(section) {
+    $('html, body').stop(true);
     $('html, body').animate({
         scrollTop: section.offset().top - parseInt(section.css('margin-top'))
     }, 1000, function() {animate = false});
@@ -48,10 +58,16 @@ function scrollToSection(section) {
 
 $(document).ready(function(){
     targetIndex = getCurIndex();
-    maxTargetIndex = $('section').length;
+    maxTargetIndex = $('section').length - 1;
     animate = false;
 
     vertCenterAll();
+    if (getCurIndex() == 0)
+        $('.arrow.up').hide();
+    else if (getCurIndex() == maxTargetIndex)
+        $('.arrow.down').hide();
+    else
+        $('.arrow').show();
 
     $('a[href*=#]:not([href=#])').click(function() {
         if (location.pathname.replace(/^\//,'') == this.pathname.replace(/^\//,'') && location.hostname == this.hostname) {
@@ -67,14 +83,32 @@ $(document).ready(function(){
         $(this).children('ul').first().slideToggle();
     });
 
+    $('.arrow').hover(
+        function() {$(this).find('path').css('fill', 'yellow')},
+        function() {$(this).find('path').css('fill', 'white')}
+    );
+
+    $('.arrow').click(function() {
+        $(this).hasClass('up') ? targetIndex = Math.max(0, targetIndex - 1) : targetIndex = Math.min(maxTargetIndex, targetIndex + 1);
+        scrollToSection($('section').eq(targetIndex));
+    });
+
     $(document).keydown(function(e) {
         e.preventDefault();
         var code = (e.keyCode ? e.keyCode : e.which);
         if (code == 38 || code == 40) {
             code == 38 ? targetIndex = Math.max(0, targetIndex - 1) : targetIndex = Math.min(maxTargetIndex, targetIndex + 1);
-            $('html, body').stop(true);
             scrollToSection($('section').eq(targetIndex));
         }
+    });
+
+    $(window).scroll(function() {
+        if (getCurIndex() == 0)
+            $('.arrow.up').fadeOut(500);
+        else if (getCurIndex() == maxTargetIndex)
+            $('.arrow.down').fadeOut(500);
+        else
+            $('.arrow').fadeIn(500);
     });
 
     $(window).mousewheel(function() {
