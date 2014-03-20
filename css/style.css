@@ -121,9 +121,10 @@ p a:hover {
 
 .arrow {
 	width: 4%;
-	margin: 3.5%;
+	margin: 2.5%;
 	position: fixed;
-	right: 27.5%;
+	right: 28.5%;
+	z-index: 10;
 }
 
 .arrow svg {
@@ -284,7 +285,7 @@ footer {
 		width: 94%;
 	}
 	.arrow {
-		right: 42.5%;
+		right: 43.5%;
 		width: 8%;
 	}
 }

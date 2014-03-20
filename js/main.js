@@ -97,7 +97,21 @@ $(document).ready(function(){
         e.preventDefault();
         var code = (e.keyCode ? e.keyCode : e.which);
         if (code == 38 || code == 40) {
-            code == 38 ? targetIndex = Math.max(0, targetIndex - 1) : targetIndex = Math.min(maxTargetIndex, targetIndex + 1);
+            if (code == 38) {
+                targetIndex = Math.max(0, targetIndex - 1);
+                $('.arrow.up').find('path').css('fill', 'yellow');
+                setTimeout(function() {
+                    $('.arrow.up').find('path').css('fill', 'white');
+                }, 200);
+            }
+            else {
+                targetIndex = Math.min(maxTargetIndex, targetIndex + 1);
+                $('.arrow.down').find('path').css('fill', 'yellow');
+                setTimeout(function() {
+                    $('.arrow.down').find('path').css('fill', 'white');
+                }, 200);
+            }
+
             scrollToSection($('section').eq(targetIndex));
         }
     });
@@ -116,6 +130,6 @@ $(document).ready(function(){
         targetIndex = getCurIndex();
     });
 
-    $(window).resize(function() {setCurIndex(); vertCenterAll()});
+    $(window).resize(vertCenterAll);
 });
 
