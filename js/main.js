@@ -14,15 +14,20 @@ function vertCenterScreen(elt) {
 }
 
 function setUp() {
-    targetIndex = getCurIndex();
-    maxTargetIndex = $('.top-level').length - 1;
+    if ($(window).width() < 900) {
+        $('#info').addClass('scroll-screen');       
+    }
+    else {
+        vertCenterParent($('#info'));
+        $('#info').removeClass('scroll-screen');
+    }
 
-    vertCenterParent($('#info'));
-    if ($(window).width() < 900)
-        $('#info').addClass('top-level');
-    $('.top-level').each(function() {
+    $('.scroll-screen').each(function() {
         vertCenterScreen($(this));
     });
+
+    targetIndex = getCurIndex();
+    maxTargetIndex = $('.scroll-screen').length - 1;
 }
 
 function displayArrows() {
@@ -42,7 +47,7 @@ function getCurIndex() {
     var curIndex = 0;
     var scrollCenter = $(window).scrollTop() + $(window).height() / 2;
 
-    $('.top-level').each(function(index) {
+    $('.scroll-screen').each(function(index) {
         var offsets = getMarginOffset($(this));
 
         if (scrollCenter >= offsets[0] && scrollCenter < offsets[1]) {
@@ -63,6 +68,7 @@ function scrollToSection(section) {
 
 $(document).ready(function(){
     setUp();
+
     if (getCurIndex() == 0)
         $('.arrow.up').hide();
     else if (getCurIndex() == maxTargetIndex)
@@ -91,7 +97,7 @@ $(document).ready(function(){
 
     $('.arrow').click(function() {
         $(this).hasClass('up') ? targetIndex = Math.max(0, targetIndex - 1) : targetIndex = Math.min(maxTargetIndex, targetIndex + 1);
-        scrollToSection($('.top-level').eq(targetIndex));
+        scrollToSection($('.scroll-screen').eq(targetIndex));
     });
 
     $(document).keydown(function(e) {
@@ -113,7 +119,7 @@ $(document).ready(function(){
                 }, 200);
             }
 
-            scrollToSection($('.top-level').eq(targetIndex));
+            scrollToSection($('.scroll-screen').eq(targetIndex));
         }
     });
 
@@ -131,6 +137,6 @@ $(document).ready(function(){
         targetIndex = getCurIndex();
     });
 
-    $(window).resize(setUp);
+    $(window).resize(function() {setUp()});
 });
 

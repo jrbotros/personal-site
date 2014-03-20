@@ -141,8 +141,8 @@ p a:hover {
 	bottom: 0;
 }
 
-.top-level {
-	overflow: hidden;
+.scroll-screen, .top-level {
+	float: left;
 }
 
 #right-half section, #right-half ul {
@@ -150,7 +150,6 @@ p a:hover {
 }
 
 #right-half section {
-	margin: 50px 0;
 	overflow: hidden;
 	float: left;
 }
