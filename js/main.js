@@ -1,5 +1,3 @@
-keyQueue = [];
-
 function vertCenterParent(elt) {
     elt.css("margin-top",(elt.parent().outerHeight() - elt.outerHeight()) / 2);
 }
@@ -22,78 +20,44 @@ function vertCenterAll() {
     });
 }
 
-function getTargetSection(idx) {
-    var target;
-    scrollCenter = $(window).scrollTop() + $(window).height() / 2;
-
-    switch(idx) {
-        // get current section
-        case 0:
-            $('#right-half section').each(function() {
-                sectionTop = $(this).offset().top - parseInt($(this).css('margin-top'));
-                sectionBottom = $(this).offset().top + $(this).outerHeight() + parseInt($(this).css('margin-bottom'));
-                currentSection = false;
-                if (scrollCenter >= sectionTop && scrollCenter < sectionBottom) {
-                    currentSection = $(this);
-                    return false;
-                }
-            });
-            target = currentSection;
-            break;
-        // get prev section
-        case -1:
-            current = getTargetSection(0);
-            if (scrollCenter > current.offset().top + current.height() / 2) {
-                target = current;
-                break
-            }
-            else {
-                target = getTargetSection(0).prev('section');
-                if (!target.length)
-                    target = getTargetSection(0).parent().prev().children('section').last();
-                break;                
-            }
-        // get next section
-        case 1:
-            current = getTargetSection(0);
-            if (scrollCenter < current.offset().top + current.height() / 2) {
-                target = current;
-                break;
-            }
-            else {
-                target = getTargetSection(0).next('section');
-                if (!target.length)
-                    target = getTargetSection(0).parent().next().children('section').first();
-                break;
-            }
-    }
-    return target;
+function getMarginOffset(elt) {
+    return [elt.offset().top - parseInt(elt.css('margin-top')), elt.offset().top + elt.outerHeight() + parseInt(elt.css('margin-bottom'))]
 }
 
-function scrollToSection(keyCode) {
-    console.log(keyQueue);
+function getCurIndex() {
+    var curIndex = 0;
+    var scrollCenter = $(window).scrollTop() + $(window).height() / 2;
 
-    if (keyCode == 38 || keyCode == 40) {
-        section = keyCode == 38 ? getTargetSection(-1) : getTargetSection(1);
+    $('section').each(function(index) {
+        var offsets = getMarginOffset($(this));
 
-        $('html,body').animate({
-            scrollTop: section.offset().top - parseInt(section.css('margin-top'))
-        },
-        1000,
-        function() {keyQueue.shift(); scrollToSection(keyQueue[0])});        
-    }
+        if (scrollCenter >= offsets[0] && scrollCenter < offsets[1]) {
+            curIndex = index;
+            return false;
+        }
+    });    
+
+    return curIndex;
+}
+
+function scrollToSection(section) {
+    $('html, body').animate({
+        scrollTop: section.offset().top - parseInt(section.css('margin-top'))
+    }, 1000, function() {animate = false});
 }
 
 $(document).ready(function(){
+    targetIndex = getCurIndex();
+    maxTargetIndex = $('section').length;
+    animate = false;
+
     vertCenterAll();
 
     $('a[href*=#]:not([href=#])').click(function() {
         if (location.pathname.replace(/^\//,'') == this.pathname.replace(/^\//,'') && location.hostname == this.hostname) {
             var target = $(this.hash).children().first();
             if (target.length) {
-                $('html,body').animate({
-                    scrollTop: target.offset().top - parseInt(target.css('margin-top'))
-                }, 1000);
+                scrollToSection(target);
                 return false;
             }
         }
@@ -106,14 +70,18 @@ $(document).ready(function(){
     $(document).keydown(function(e) {
         e.preventDefault();
         var code = (e.keyCode ? e.keyCode : e.which);
-
-        if (!keyQueue.length && (code == 38 || code == 40)) {
-            scrollToSection(code)
+        if (code == 38 || code == 40) {
+            code == 38 ? targetIndex = Math.max(0, targetIndex - 1) : targetIndex = Math.min(maxTargetIndex, targetIndex + 1);
+            $('html, body').stop(true);
+            scrollToSection($('section').eq(targetIndex));
         }
-
-        keyQueue.push(code);
     });
 
-    $(window).resize(function() {vertCenterAll()});
+    $(window).mousewheel(function() {
+        $('html, body').stop(true);
+        targetIndex = getCurIndex();
+    });
+
+    $(window).resize(function() {setCurIndex(); vertCenterAll()});
 });
 
