@@ -63,7 +63,7 @@ function scrollToSection(section) {
     $('html, body').stop(true);
     $('html, body').animate({
         scrollTop: section.offset().top - parseInt(section.css('margin-top'))
-    }, 1000, function() {animate = false});
+    }, 1000, function() {targetIndex = getCurIndex()});
 }
 
 $(document).ready(function(){
@@ -80,6 +80,7 @@ $(document).ready(function(){
         if (location.pathname.replace(/^\//,'') == this.pathname.replace(/^\//,'') && location.hostname == this.hostname) {
             var target = $(this.hash).children().first();
             if (target.length) {
+                targetIndex = $('section').index(target);
                 scrollToSection(target);
                 return false;
             }

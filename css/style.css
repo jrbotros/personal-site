@@ -91,12 +91,6 @@ p a:hover {
 	padding: 0;
 }
 
-#left-half #info ul li.hover {
-	background-color: #ba0600;
-	transition: background-color 1s;
-	-webkit-transition: background-color 1s;
-}
-
 #left-half #info ul li:after {
 	content: "|";
 	padding: 5px;
@@ -195,6 +189,10 @@ p a:hover {
 	font-weight: bold;
 }
 
+#experience ul li ul li:hover:before {
+	content: "";
+}
+
 #resume ul li ul {
 	display: none;
 	list-style: disc;	
@@ -290,5 +288,11 @@ footer {
 	.arrow {
 		right: 43.5%;
 		width: 8%;
+	}
+}
+
+@media(max-width: 400px) {
+	html, body {
+		font-weight: bold;
 	}
 }
