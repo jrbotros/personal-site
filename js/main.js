@@ -88,8 +88,8 @@ $(function(){
         }
     });
 
-    $('#resume ul li').click(function() {
-        $(this).children('ul').first().slideToggle();
+    $('#resume ul li h4').click(function() {
+        $(this).parents('li').children('ul').first().slideToggle();
     });
 
     $('.arrow').hover(
