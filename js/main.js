@@ -66,12 +66,13 @@ function scrollToSection(section) {
     }, 1000, function() {targetIndex = getCurIndex()});
 }
 
-$(document).ready(function(){
+$(function(){
     setUp();
-
-    if (getCurIndex() == 0)
+    
+    var curIndex = getCurIndex()
+    if (curIndex == 0)
         $('.arrow.up').hide();
-    else if (getCurIndex() == maxTargetIndex)
+    else if (curIndex == maxTargetIndex)
         $('.arrow.down').hide();
     else
         $('.arrow').show();
@@ -92,8 +93,8 @@ $(document).ready(function(){
     });
 
     $('.arrow').hover(
-        function() {$(this).find('path').css('fill', 'yellow')},
-        function() {$(this).find('path').css('fill', 'white')}
+        function() {$(this).find('path').css('opacity', '1')},
+        function() {$(this).find('path').css('opacity', '0.5')}
     );
 
     $('.arrow').click(function() {
@@ -104,19 +105,20 @@ $(document).ready(function(){
     $(document).keydown(function(e) {
         e.preventDefault();
         var code = (e.keyCode ? e.keyCode : e.which);
+
         if (code == 38 || code == 40) {
             if (code == 38) {
                 targetIndex = Math.max(0, targetIndex - 1);
-                $('.arrow.up').find('path').css('fill', 'yellow');
+                $('.arrow.up').find('path').css('opacity', '1');
                 setTimeout(function() {
-                    $('.arrow.up').find('path').css('fill', 'white');
+                    $('.arrow.up').find('path').css('opacity', '0.5');
                 }, 200);
             }
             else {
                 targetIndex = Math.min(maxTargetIndex, targetIndex + 1);
-                $('.arrow.down').find('path').css('fill', 'yellow');
+                $('.arrow.down').find('path').css('opacity', '1');
                 setTimeout(function() {
-                    $('.arrow.down').find('path').css('fill', 'white');
+                    $('.arrow.down').find('path').css('opacity', '0.5');
                 }, 200);
             }
 
@@ -125,9 +127,10 @@ $(document).ready(function(){
     });
 
     $(window).scroll(function() {
-        if (getCurIndex() == 0)
+        curIndex = getCurIndex();
+        if (curIndex == 0)
             $('.arrow.up').fadeOut(500);
-        else if (getCurIndex() == maxTargetIndex)
+        else if (curIndex == maxTargetIndex)
             $('.arrow.down').fadeOut(500);
         else
             $('.arrow').fadeIn(500);
