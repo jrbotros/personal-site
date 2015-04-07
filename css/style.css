@@ -4,7 +4,7 @@ html, body {
     width: 100%;
 	font-family: 'Lato', sans-serif;
 	font-size: 20px;
-	font-weight: 100;
+	font-weight: 400;
 	line-height: 1.5;
 	color: white;
 }
@@ -38,6 +38,7 @@ p a:hover {
 	left: 0;
 	top: 0;
 	bottom: 0;
+	z-index: 10;
 }
 
 #left-half #info {
@@ -108,7 +109,7 @@ p a:hover {
 	margin: 2.5%;
 	position: fixed;
 	right: 28.5%;
-	z-index: 10;
+	z-index: 9;
 }
 
 .arrow path {
@@ -240,6 +241,10 @@ p a:hover {
 	background-size: cover;
 	border: 5px rgb(41, 128, 185) solid;
 	border-radius: 10px;
+}
+
+.folio-entry-img.vials {
+	background-image: url('../img/vials.png');
 }
 
 .folio-entry-img.a {
