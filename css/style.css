@@ -192,12 +192,31 @@ p a:hover {
 	margin-top: 0;
 }
 
-#experience ul li:hover:before {
+#experience ul li:before {
+	visibility: hidden;
 	content: "\25b6";
 	position: absolute;
 	left: 0;
 	color: rgb(41, 128, 185);
 	font-weight: bold;
+}
+
+#experience ul li:hover:before {
+	visibility: visible;
+	-webkit-transform: rotate(0deg);
+	-moz-transform: rotate(0deg);
+	-o-transform: rotate(0deg);
+	-ms-transform: rotate(0deg);
+	transform: rotate(0deg);
+}
+
+#experience ul li.selected:before {
+	visibility: visible;
+	-webkit-transform: rotate(90deg);
+	-moz-transform: rotate(90deg);
+	-o-transform: rotate(90deg);
+	-ms-transform: rotate(90deg);
+	transform: rotate(90deg);
 }
 
 #experience ul li ul li:hover:before {

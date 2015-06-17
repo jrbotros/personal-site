@@ -89,6 +89,7 @@ $(function(){
     });
 
     $('#resume ul li h4').click(function() {
+        $(this).parents('li').toggleClass("selected");
         $(this).parents('li').children('ul').first().slideToggle();
     });
 
