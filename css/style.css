@@ -20,7 +20,7 @@ a {
 	font-weight: bold;
 }
 
-p a:hover {
+a:hover {
 	text-decoration: underline;
 }
 
