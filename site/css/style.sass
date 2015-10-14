@@ -1,26 +1,37 @@
 @charset 'utf-8'
 
+$tardis-blue: rgb(0,59,111)
+$border-radius: 10px
+
 html, body
   margin: 0
   height: 100%
   width: 100%
-  font-family: 'Lato', sans-serif
-  font-size: 20px
-  font-weight: 400
-  line-height: 1.5
-  color: white
+  font-family: 'PT Sans', sans-serif
+  font-size: 16px
 
 h1, h2, h3, h4, h5, h6
   margin: 0
-  color: rgb(41, 128, 185)
+  color: $tardis-blue
 
 a
   text-decoration: none
-  color: rgb(41, 128, 185)
-  font-weight: bold
+  color: $tardis-blue
 
   &:hover
     text-decoration: underline
+
+ul
+  overflow: hidden
+  list-style: none
+  padding: 0
+  margin: 0
+
+p
+  margin: 0.5rem 0
+
+section h1
+  padding: 0.5rem 0
 
 #main
   position: relative
@@ -30,12 +41,13 @@ a
 #left-half
   height: 100%
   width: 34%
-  background: rgb(41, 128, 185)
+  background: $tardis-blue
   position: fixed
   left: 0
   top: 0
   bottom: 0
   z-index: 10
+  color: white
 
 #info
   float: left
@@ -46,18 +58,17 @@ a
 #info img
   width: 250px
   height: 250px
-  border: 5px white solid
-  border-radius: 10px
+  border-radius: $border-radius
 
 #info h1
-  font-size: 1.5em
+  font-size: 1.5rem
   text-transform: uppercase
-  font-family: 'Montserrat'
+  font-family: 'Montserrat', sans-serif
   color: white
 
 #info ul
   list-style: none
-  font-size: 1em
+  font-size: 1rem
   overflow: hidden
   padding: 0
   margin: 0 auto
@@ -68,19 +79,19 @@ a
   padding: 0
 
 #info ul li:after
-  content: "|"
+  content: '|'
   padding: 5px
 
 #info ul li:last-child:after
-  content: ""
+  content: ''
   padding: 0
 
 #info ul li a
   text-decoration: none
   color: white
 
-#info ul li a:hover
-  text-decoration: underline
+  &:hover
+    text-decoration: underline
 
 #right-half
   width: 60%
@@ -98,7 +109,7 @@ a
   z-index: 9
 
 .arrow path
-  fill: rgb(41, 128, 185)
+  fill: $tardis-blue
   opacity: 0.5
 
 .arrow svg
@@ -123,94 +134,67 @@ a
   padding-left: 0
 
 #right-half section h1
-  font-size: 2em
-  margin: 25px 0
-  border-bottom: 3px rgb(41, 128, 185) solid
+  font-size: 2rem
+  border-bottom: 1px $tardis-blue solid
   text-transform: uppercase
-  font-family: 'Montserrat'
+  font-family: 'Montserrat', sans-serif
 
 .folio-entry
   margin: 100px 0
 
-#resume p
-  margin: 0
-
 #resume h2
   display: inline-block
-  font-family: 'Montserrat'
+  font-family: 'Montserrat', sans-serif
   text-transform: uppercase
-  border-bottom: 3px rgb(41, 128, 185) solid
+  border-bottom: 1px $tardis-blue solid
   margin-bottom: 25px
 
 #resume h3
-  font-family: 'Montserrat'
+  font-family: 'Montserrat', sans-serif
   display: block
   color: #333
 
 #resume .education-item
   margin-bottom: 25px
 
-#resume ul
-  list-style: none
-  margin: 0 auto
-  position: relative
+#experience
+  > ul
+    margin: 5px 0 10px 0
 
-#resume ul li
-  margin: 20px auto
+    > li
+      margin: 0
+      float: left
+      margin: 5px
+      padding: 10px
+      clear: both
 
-#resume ul li:first-child
-  margin-top: 0
+      &:hover, &.selected
+        box-shadow: inset 0px 0px 0px 1px $tardis-blue
+        border-radius: $border-radius
 
-#experience ul li:before
-  visibility: hidden
-  content: "\25b6"
-  position: absolute
-  left: 0
-  color: rgb(41, 128, 185)
-  font-weight: bold
-
-#experience ul li:hover:before
-  visibility: visible
-  -webkit-transform: rotate(0deg)
-  -moz-transform: rotate(0deg)
-  -o-transform: rotate(0deg)
-  -ms-transform: rotate(0deg)
-  transform: rotate(0deg)
-
-#experience ul li.selected:before
-  visibility: visible
-  -webkit-transform: rotate(90deg)
-  -moz-transform: rotate(90deg)
-  -o-transform: rotate(90deg)
-  -ms-transform: rotate(90deg)
-  transform: rotate(90deg)
-
-#experience ul li ul li:hover:before
-  content: ""
-
-#resume ul li ul
-  display: none
-  list-style: disc
-  padding-left: 6%
-
-#resume ul li ul li
-  margin: 0 auto
+      > ul
+        margin: 5px 0
+        display: none
+        float: left
+        padding-left: 20px
+        list-style: disc
+        font-size: 0.75rem
 
 #resume ul li h4
-  color: rgb(41, 128, 185)
+  color: $tardis-blue
 
 #resume ul li h5
   font-style: italic
   color: #333
 
 #folio section h2
-  font-family: 'Montserrat'
+  font-family: 'Montserrat', sans-serif
   text-transform: uppercase
   text-decoration: none
-  font-size: 1.8em
+  font-size: 1.8rem
   margin: 10px 0
 
-.folio-entry-img
+.folio-img
   height: 200px
   background-repeat: no-repeat
   background-position: top center
@@ -218,29 +202,8 @@ a
   -moz-background-size: cover
   -o-background-size: cover
   background-size: cover
-  border: 5px rgb(41, 128, 185) solid
-  border-radius: 10px
-
-.folio-entry-img.vials
-  background-image: url('../img/vials.png')
-
-.folio-entry-img.a
-  background-image: url('../img/crimson.png')
-
-.folio-entry-img.b
-  background-image: url('../img/marathon.png')
-
-.folio-entry-img.c
-  background-image: url('../img/survey.png')
-
-.folio-entry-img.d
-  background-image: url('../img/lost-and-found.png')
-
-.folio-entry-img.e
-  background-image: url('../img/hackers.png')
-
-.folio-entry-img.f
-  background-image: url('../img/smith.png')
+  border: 1px $tardis-blue solid
+  border-radius: $border-radius
 
 .disable-select
   -webkit-user-select: none

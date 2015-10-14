@@ -88,9 +88,9 @@ $(function(){
         }
     });
 
-    $('#resume ul li h4').click(function() {
-        $(this).parents('li').toggleClass("selected");
-        $(this).parents('li').children('ul').first().slideToggle();
+    $('#resume ul li').click(function() {
+        $(this).toggleClass("selected");
+        $(this).children('ul').first().slideToggle();
     });
 
     $('.arrow').hover(
