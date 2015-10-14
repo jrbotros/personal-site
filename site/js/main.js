@@ -15,7 +15,7 @@ function vertCenterScreen(elt) {
 
 function setUp() {
     if ($(window).width() < 900) {
-        $('#info').addClass('scroll-screen');       
+        $('#info').addClass('scroll-screen');
     }
     else {
         vertCenterParent($('#info'));
@@ -54,7 +54,7 @@ function getCurIndex() {
             curIndex = index;
             return false;
         }
-    });    
+    });
 
     return curIndex;
 }
@@ -68,7 +68,7 @@ function scrollToSection(section) {
 
 $(function(){
     setUp();
-    
+
     var curIndex = getCurIndex()
     if (curIndex == 0)
         $('.arrow.up').hide();
