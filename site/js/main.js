@@ -1,5 +1,5 @@
 (function() {
-  // 'use strict';
+  'use strict';
 
   // Taken from https://andylangton.co.uk/blog/development/get-viewportwindow-size-width-and-height-javascript.
   // To be used until https://developer.mozilla.org/en-US/docs/Web/API/Window/matchMedia becomes a standard!
@@ -29,7 +29,7 @@
   };
   throttle('scroll', 'optimizedScroll');
 
-  scroller = {
+  var scroller = {
     sectionSelectors: ['section'],
     arrowSelector: '.arrow',
     scrolling: false,
