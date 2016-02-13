@@ -13,3 +13,7 @@ def deploy(name=None, flags=default_flags):
     else:
         local('aws s3 cp {0} {1} {2}'
               .format(name, os.path.join(s3_path, name), flags))
+
+
+def sass():
+    local('sass --watch site/css/style.sass:site/css/style.css')

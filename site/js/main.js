@@ -1,147 +1,178 @@
-function vertCenterParent(elt) {
-    elt.css("margin-top",(elt.parent().outerHeight() - elt.outerHeight()) / 2);
-}
+(function() {
+  // 'use strict';
 
-function vertCenterScreen(elt) {
-    windowHeight = $(window).height();
-    eltHeight = elt.outerHeight();
-    delHeight = (windowHeight - eltHeight) / 2;
+  // Taken from https://andylangton.co.uk/blog/development/get-viewportwindow-size-width-and-height-javascript.
+  // To be used until https://developer.mozilla.org/en-US/docs/Web/API/Window/matchMedia becomes a standard!
+  var viewport = function() {
+      var e = window, a = 'inner';
+      if (!('innerWidth' in window )) {
+          a = 'client';
+          e = document.documentElement || document.body;
+      }
+      return { width : e[ a+'Width' ] , height : e[ a+'Height' ] };
+  }
 
-    if (eltHeight < windowHeight) {
-        elt.css("margin-top", delHeight);
-        elt.css("margin-bottom", delHeight);
-    }
-}
 
-function setUp() {
-    if ($(window).width() < 900) {
-        $('#info').addClass('scroll-screen');
-    }
-    else {
-        vertCenterParent($('#info'));
-        $('#info').removeClass('scroll-screen');
-    }
+  // Taken from https://developer.mozilla.org/en-US/docs/Web/Events/scroll.
+  var throttle = function(type, name, obj) {
+      obj = obj || window;
+      var running = false;
+      var func = function() {
+          if (running) { return; }
+          running = true;
+          requestAnimationFrame(function() {
+              obj.dispatchEvent(new CustomEvent(name));
+              running = false;
+          });
+      };
+      obj.addEventListener(type, func);
+  };
+  throttle('scroll', 'optimizedScroll');
 
-    $('.scroll-screen').each(function() {
-        vertCenterScreen($(this));
-    });
+  scroller = {
+    sectionSelectors: ['section'],
+    arrowSelector: '.arrow',
+    scrolling: false,
+    init: function() {
+      var scroller = this;
+      var sections = scroller.sections();
 
-    targetIndex = getCurIndex();
-    maxTargetIndex = $('.scroll-screen').length - 1;
-}
-
-function displayArrows() {
-    if (getCurIndex() == 0)
-        $('.arrow.up').fadeOut(500);
-    else if (getCurIndex() == maxTargetIndex)
-        $('.arrow.down').fadeOut(500);
-    else
-        $('.arrow').fadeIn(500);
-}
-
-function getMarginOffset(elt) {
-    return [elt.offset().top - parseInt(elt.css('margin-top')), elt.offset().top + elt.outerHeight() + parseInt(elt.css('margin-bottom'))]
-}
-
-function getCurIndex() {
-    var curIndex = 0;
-    var scrollCenter = $(window).scrollTop() + $(window).height() / 2;
-
-    $('.scroll-screen').each(function(index) {
-        var offsets = getMarginOffset($(this));
-
-        if (scrollCenter >= offsets[0] && scrollCenter < offsets[1]) {
-            curIndex = index;
-            return false;
-        }
-    });
-
-    return curIndex;
-}
-
-function scrollToSection(section) {
-    $('html, body').stop(true);
-    $('html, body').animate({
-        scrollTop: section.offset().top - parseInt(section.css('margin-top'))
-    }, 1000, function() {targetIndex = getCurIndex()});
-}
-
-$(function(){
-    setUp();
-
-    var curIndex = getCurIndex()
-    if (curIndex == 0)
-        $('.arrow.up').hide();
-    else if (curIndex == maxTargetIndex)
-        $('.arrow.down').hide();
-    else
-        $('.arrow').show();
-
-    $('a[href*=#]:not([href=#])').click(function() {
-        if (location.pathname.replace(/^\//,'') == this.pathname.replace(/^\//,'') && location.hostname == this.hostname) {
+      var links = document.querySelectorAll('nav a[href*="#"]:not([href="#"])');
+      for (var i = links.length - 1; i >= 0; i--) {
+        links[i].addEventListener('click', function() {
+          if (location.pathname.replace(/^\//,'') == this.pathname.replace(/^\//,'') && location.hostname == this.hostname) {
             var target = $(this.hash).children().first();
             if (target.length) {
-                targetIndex = $('section').index(target);
-                scrollToSection(target);
-                return false;
+              scroller.targetIndex = $('section').index(target);
+              scroller.absolute(scroller.targetIndex);
+              return false;
             }
+          }
+        });
+      };
+      Mousetrap.bind('up', function() { scroller.relative(-1) });
+      Mousetrap.bind('down', function() { scroller.relative(1) });
+      scroller.showArrows();
+      $(scroller.arrowSelector).click(function() {
+        $(this).hasClass('up') ? scroller.relative(-1) : scroller.relative(1);
+      });
+
+      window.addEventListener('resize', function() {
+        scroller.toggleMobileSection('#info');
+        if (!scroller.scrolling) {
+          scroller.targetIndex = scroller.curIndex();
         }
-    });
-
-    $('#resume ul li').click(function() {
-        $(this).toggleClass("selected");
-        $(this).children('ul').first().slideToggle();
-    });
-
-    $('.arrow').hover(
-        function() {$(this).find('path').css('opacity', '1')},
-        function() {$(this).find('path').css('opacity', '0.5')}
-    );
-
-    $('.arrow').click(function() {
-        $(this).hasClass('up') ? targetIndex = Math.max(0, targetIndex - 1) : targetIndex = Math.min(maxTargetIndex, targetIndex + 1);
-        scrollToSection($('.scroll-screen').eq(targetIndex));
-    });
-
-    $(document).keydown(function(e) {
-        e.preventDefault();
-        var code = (e.keyCode ? e.keyCode : e.which);
-
-        if (code == 38 || code == 40) {
-            if (code == 38) {
-                targetIndex = Math.max(0, targetIndex - 1);
-                $('.arrow.up').find('path').css('opacity', '1');
-                setTimeout(function() {
-                    $('.arrow.up').find('path').css('opacity', '0.5');
-                }, 200);
-            }
-            else {
-                targetIndex = Math.min(maxTargetIndex, targetIndex + 1);
-                $('.arrow.down').find('path').css('opacity', '1');
-                setTimeout(function() {
-                    $('.arrow.down').find('path').css('opacity', '0.5');
-                }, 200);
-            }
-
-            scrollToSection($('.scroll-screen').eq(targetIndex));
+      })
+      window.addEventListener('optimizedScroll', function() {
+        scroller.showArrows();
+        if (!scroller.scrolling) {
+          scroller.targetIndex = scroller.curIndex();
         }
-    });
+      })
+      scroller.toggleMobileSection('#info');
+      scroller.targetIndex = scroller.curIndex();
+      scroller.maxTargetIndex = sections.length - 1;
+    },
+    sections: function() {
+      return document.querySelectorAll(this.sectionSelectors);
+    },
+    curIndex: function() {
+      var curIndex = 0;
+      var scrollCenter = $(window).scrollTop() + $(window).height() / 2;
 
-    $(window).scroll(function() {
-        curIndex = getCurIndex();
-        if (curIndex == 0)
-            $('.arrow.up').fadeOut(500);
-        else if (curIndex == maxTargetIndex)
-            $('.arrow.down').fadeOut(500);
-        else
-            $('.arrow').fadeIn(500);
-    });
-
-    $(window).mousewheel(function() {
+      var sections = document.querySelectorAll(scroller.sectionSelectors);
+      for (var i = sections.length - 1; i >= 0; i--) {
+        var section = sections[i];
+        var offsets = getMarginOffset(section);
+        if (scrollCenter >= offsets[0] && scrollCenter < offsets[1]) {
+          return i;
+        }
+      };
+    },
+    absolute: function(index) {
+      var scroller = this;
+      var section = scroller.sections()[index];
+      section = $(section);
+      if (scroller.scrolling) {
         $('html, body').stop(true);
-        targetIndex = getCurIndex();
-    });
+      }
+      scroller.scrolling = true;
+      $('html, body').animate({
+        scrollTop: section.offset().top - parseInt(section.css('margin-top'))
+      }, 1000, function() {
+        scroller.targetIndex = scroller.curIndex();
+        scroller.scrolling = false;
+      });
+    },
+    relative: function(relativeIndex) {
+      if (relativeIndex === 0) {
+        return;
+      }
+      var arrowClass;
+      if (relativeIndex < 0) {
+        scroller.targetIndex = Math.max(0, this.targetIndex + relativeIndex);
+        arrowClass = this.arrowSelector + '.up';
+      }
+      else if (relativeIndex > 0) {
+        scroller.targetIndex = Math.min(this.targetIndex + relativeIndex, this.maxTargetIndex);
+        arrowClass = this.arrowSelector + '.down';
+      }
+      $(arrowClass).find('path').css('opacity', '1');
+      setTimeout(function() {
+        $(arrowClass).find('path').css('opacity', '0.5');
+      }, 200);
+      this.absolute(scroller.targetIndex);
+    },
+    showArrows: function() {
+      var curIndex = this.curIndex()
+      var hideSelector;
+      if (curIndex == 0) {
+        hideSelector = '.up'
+      }
+      else if (curIndex == this.maxTargetIndex) {
+        hideSelector = '.down'
+      }
+      if (hideSelector) {
+        $(this.arrowSelector + hideSelector).fadeOut();
+        $(this.arrowSelector + ':not(' + hideSelector + ')').fadeIn();
+      }
+      else {
+        $(this.arrowSelector).fadeIn();
+      }
+    },
+    toggleMobileSection: function(selector) {
+      var index = scroller.sectionSelectors.indexOf(selector);
+      if (viewport().width < 900) {
+        if (index === -1) {
+          this.sectionSelectors.push(selector);
+        }
+      }
+      else if (index > -1) {
+        this.sectionSelectors.splice(index, 1);
+      }
+    }
+  }
+  scroller.init();
 
-    $(window).resize(function() {setUp()});
-});
+  function vertCenterScreen(elt) {
+    elt = $(elt);
+    var windowHeight = $(window).height(),
+      eltHeight = elt.outerHeight(),
+      delHeight = (windowHeight - eltHeight) / 2;
 
+    if (eltHeight < windowHeight) {
+      elt.css('margin-top', delHeight);
+      elt.css('margin-bottom', delHeight);
+    }
+  }
+
+  function getMarginOffset(elt) {
+    elt = $(elt);
+    return [elt.offset().top - parseInt(elt.css('margin-top')), elt.offset().top + elt.outerHeight() + parseInt(elt.css('margin-bottom'))]
+  }
+
+  $('#resume ul li').click(function() {
+    $(this).toggleClass('selected');
+    $(this).children('ul').first().slideToggle();
+  });
+})();
