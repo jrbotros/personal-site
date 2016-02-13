@@ -147,35 +147,37 @@ section h1 {
 #resume .education-item {
   margin-bottom: 25px; }
 
-.experience .scroll-screen > ul {
-  margin: 5px 0 10px 0; }
-  .experience .scroll-screen > ul > li {
-    margin: 0;
-    float: left;
+.experience .scroll-screen h3 {
+  margin-bottom: 0; }
+.experience .scroll-screen > ul:not(:last-child) {
+  margin-bottom: 10px; }
+.experience .scroll-screen > ul > li {
+  margin: 0;
+  float: left;
+  margin: 5px 0;
+  padding: 10px;
+  clear: both;
+  width: 100%;
+  box-sizing: border-box; }
+  .experience .scroll-screen > ul > li:hover, .experience .scroll-screen > ul > li.selected {
+    box-shadow: inset 0px 0px 0px 1px #003e67;
+    border-radius: 10px; }
+  .experience .scroll-screen > ul > li > ul {
     margin: 5px 0;
-    padding: 10px;
-    clear: both;
-    width: 100%;
-    box-sizing: border-box; }
-    .experience .scroll-screen > ul > li:hover, .experience .scroll-screen > ul > li.selected {
-      box-shadow: inset 0px 0px 0px 1px #003e67;
-      border-radius: 10px; }
-    .experience .scroll-screen > ul > li > ul {
-      margin: 5px 0;
-      display: none;
-      float: left;
-      padding-left: 20px;
-      list-style: none;
-      font-size: 0.85rem; }
-      .experience .scroll-screen > ul > li > ul > li {
-        position: relative; }
-        .experience .scroll-screen > ul > li > ul > li:not(:last-child) {
-          margin-bottom: 5px; }
-        .experience .scroll-screen > ul > li > ul > li:before {
-          position: absolute;
-          left: -10px;
-          content: "-";
-          color: #003e67; }
+    display: none;
+    float: left;
+    padding-left: 20px;
+    list-style: none;
+    font-size: 0.85rem; }
+    .experience .scroll-screen > ul > li > ul > li {
+      position: relative; }
+      .experience .scroll-screen > ul > li > ul > li:not(:last-child) {
+        margin-bottom: 5px; }
+      .experience .scroll-screen > ul > li > ul > li:before {
+        position: absolute;
+        left: -10px;
+        content: "-";
+        color: #003e67; }
 
 #resume ul li h4 {
   color: #003e67; }
