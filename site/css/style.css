@@ -7,11 +7,11 @@ html, body {
 
 h1, h2, h3, h4, h5, h6 {
   margin: 0;
-  color: #003b6f; }
+  color: #003e67; }
 
 a {
   text-decoration: none;
-  color: #003b6f; }
+  color: #003e67; }
   a:hover {
     text-decoration: underline; }
 
@@ -29,13 +29,13 @@ section h1 {
 
 #main {
   position: relative;
-  background-color: #333;
+  background-color: #333333;
   overflow: hidden; }
 
 #left-half {
   height: 100%;
   width: 34%;
-  background: #003b6f;
+  background: #003e67;
   position: fixed;
   left: 0;
   top: 0;
@@ -102,7 +102,7 @@ section h1 {
   z-index: 9; }
 
 .arrow path {
-  fill: #003b6f;
+  fill: #003e67;
   opacity: 0.5; }
 
 .arrow svg {
@@ -128,7 +128,7 @@ section h1 {
 
 #right-half section h1 {
   font-size: 2rem;
-  border-bottom: 1px #003b6f solid;
+  border-bottom: 1px #003e67 solid;
   text-transform: uppercase;
   font-family: "Montserrat", sans-serif; }
 
@@ -139,13 +139,13 @@ section h1 {
   display: inline-block;
   font-family: "Montserrat", sans-serif;
   text-transform: uppercase;
-  border-bottom: 1px #003b6f solid;
+  border-bottom: 1px #003e67 solid;
   margin-bottom: 25px; }
 
 #resume h3 {
   font-family: "Montserrat", sans-serif;
   display: block;
-  color: #333; }
+  color: #333333; }
 
 #resume .education-item {
   margin-bottom: 25px; }
@@ -159,7 +159,7 @@ section h1 {
     padding: 10px;
     clear: both; }
     #experience > ul > li:hover, #experience > ul > li.selected {
-      box-shadow: inset 0px 0px 0px 1px #003b6f;
+      box-shadow: inset 0px 0px 0px 1px #003e67;
       border-radius: 10px; }
     #experience > ul > li > ul {
       margin: 5px 0;
@@ -170,11 +170,11 @@ section h1 {
       font-size: 0.75rem; }
 
 #resume ul li h4 {
-  color: #003b6f; }
+  color: #003e67; }
 
 #resume ul li h5 {
   font-style: italic;
-  color: #333; }
+  color: #333333; }
 
 #folio section h2 {
   font-family: "Montserrat", sans-serif;
@@ -191,7 +191,7 @@ section h1 {
   -moz-background-size: cover;
   -o-background-size: cover;
   background-size: cover;
-  border: 1px #003b6f solid;
+  border: 1px #003e67 solid;
   border-radius: 10px; }
 
 .disable-select {
